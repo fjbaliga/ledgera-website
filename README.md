@@ -1,90 +1,107 @@
 # Ledgera website
 
 The public landing site for **Ledgera — The Modular Distributed Ledger**.
-A single-page static site, no build step required.
+A single-page static site — plain HTML/CSS/JS, no build step or dependencies.
 
 ## Project layout
 
 ```
 .
-├── index.html                Single-page site (all sections)
-├── LICENSE                   MIT
-├── .gitlab-ci.yml            GitLab Pages deploy job
+├── index.html              Single-page site (all sections)
+├── .htaccess               Apache rules for OVH hosting (canonical host + force HTTPS)
+├── CNAME                   GitHub Pages custom domain (ledgera.tech)
+├── .nojekyll               Disable Jekyll processing on GitHub Pages
+├── .gitlab-ci.yml          CI: GitLab Pages publish + OVH SFTP deploy
+├── LICENSE                 MIT
+├── README.md
 └── assets/
-    ├── css/styles.css        Stylesheet
-    ├── js/script.js          Theme toggle, mobile nav + scroll-spy
-    ├── images/logo/          Ledgera logo (SVG)
-    ├── icons/                Favicon (SVG)
-    ├── fonts/                Reserved for self-hosted web fonts
-    └── docs/                 Downloadable PDFs (whitepaper, yellow paper)
+    ├── css/styles.css      Stylesheet (light + dark themes)
+    ├── js/script.js        Theme toggle / auto night mode, mobile nav, scroll-spy, scroll-reveal
+    ├── images/
+    │   ├── logo/           Ledgera logo, favicon, role icons (SVG)
+    │   └── og-image.*      Social-share image (Open Graph / Twitter)
+    ├── fonts/              Reserved for self-hosted web fonts
+    └── docs/               Downloadable PDFs (whitepaper, yellow paper, Fantastyc)
 ```
+
+## Features
+
+- Single-page, fully static — no toolchain, no JS framework, no dependencies.
+- **Light & dark themes** — follows the OS appearance automatically (including
+  switching live when the system flips to night mode), with a header toggle
+  that persists an explicit choice in `localStorage`. The theme is applied
+  before first paint to avoid a flash.
+- Mobile nav, scroll-spy active-section highlighting, and scroll-reveal
+  animations — all respect `prefers-reduced-motion`.
+- Social/SEO metadata: Open Graph + Twitter cards.
 
 ## Local development
 
-The site is plain HTML/CSS/JS — no toolchain or dependencies. Serve it with
-any static-file server:
+Plain HTML/CSS/JS — serve the folder with any static file server:
 
 ```sh
 python3 -m http.server 9000 --bind 127.0.0.1
 # then open http://127.0.0.1:9000/
 ```
 
-To make it reachable from other devices on your LAN, replace `--bind 127.0.0.1`
-with `--bind 0.0.0.0` (be mindful of firewalls and what you're exposing).
+Use `--bind 0.0.0.0` to reach it from other devices on your LAN (mind
+firewalls and what you're exposing).
 
-## Deployment — GitLab Pages
+## Deployment
 
-This repository is configured to deploy automatically to **GitLab Pages**
-through the [`.gitlab-ci.yml`](.gitlab-ci.yml) at the repo root. Follow these
-steps to publish the site.
+The site can be published to any static host. Three targets are wired up:
 
-### 1. Configure (already done)
+| Target | Reachability | HTTPS | How |
+| --- | --- | --- | --- |
+| **GitLab Pages** | Internal (CEA network) | automatic | `pages` job in `.gitlab-ci.yml` |
+| **OVH shared hosting** | Public | manual (OVH cert) | `deploy:ovh` job, or VS Code SFTP |
+| **GitHub Pages** | Public | automatic (Let's Encrypt) | push to GitHub + `CNAME` |
 
-The [`.gitlab-ci.yml`](.gitlab-ci.yml) defines a single `pages` job that
-copies `index.html`, `LICENSE`, and the `assets/` tree into a `public/`
-directory. GitLab Pages picks that directory up automatically.
+> **Note:** the CEA GitLab instance (`gitlab.freyja.intra.cea.fr`) and its
+> Pages are reachable only from inside the CEA network, so GitLab Pages serves
+> as an **internal preview**. Public visitors are served by OVH and/or GitHub
+> Pages.
 
-The job runs only on the default branch (`main`).
+### GitLab Pages — internal preview
 
-### 2. Push to GitLab
+`.gitlab-ci.yml` defines a `pages` job that copies `index.html`, `.htaccess`,
+`LICENSE`, and `assets/` into `public/`, which GitLab Pages publishes. It runs
+on every push to `main`; the published URL is shown under **Deploy → Pages**.
+You can also trigger a run from **Build → Pipelines → Run pipeline**.
 
-Commit any changes and push to the default branch:
+### OVH shared hosting — public
 
-```sh
-git add .
-git commit -m "Update site"
-git push origin main
-```
+Two ways to push to the OVH account (cluster `cluster100`, docroot `www`):
 
-### 3. Start (or watch) the pipeline
+- **CI — `deploy:ovh` job:** mirrors the built `public/` tree over SFTP with
+  `lftp`. It stays **dormant** until you add a masked **`OVH_PASSWORD`** CI/CD
+  variable (Settings → CI/CD → Variables). Optionally add **`OVH_KNOWN_HOSTS`**
+  (the output of `ssh-keyscan ssh.cluster100.hosting.ovh.net`) to pin the host
+  key with strict checking; without it the job falls back to trust-on-first-use.
+  A TCP reachability pre-check and connection timeouts keep a blocked runner
+  from hanging.
+  ⚠️ The CEA runners have **no outbound internet**, so this job only succeeds
+  on a runner with egress to OVH.
+- **VS Code SFTP:** [`.vscode/sftp.json`](.vscode/sftp.json) uploads on save to
+  the same docroot — the practical path from inside the CEA network.
 
-GitLab triggers the pipeline automatically on push. To watch it:
+[`.htaccess`](.htaccess) sets the canonical host (`www.ledgera.tech`) and forces
+HTTPS on OVH's Apache. It is ignored by GitLab/GitHub Pages.
 
-- Open the project in GitLab → **Build → Pipelines**.
-- The first pipeline on this commit should run a `pages` job in the
-  `deploy` stage. When it turns green, the deployment is live.
+### GitHub Pages — public, automatic HTTPS
 
-You can also trigger a pipeline manually from **Build → Pipelines →
-Run pipeline**.
+For public hosting with automatic Let's Encrypt HTTPS on `ledgera.tech`:
 
-### 4. Find the published URL
-
-Once the `pages` job succeeds, open **Deploy → Pages** in the project
-sidebar. GitLab will show the URL at which the site is published.
-
-The exact host depends on your GitLab instance:
-
-- **gitlab.com**: `https://<group>.gitlab.io/<project>/`
-- **self-hosted / corporate GitLab** (e.g. `gitlab.freyja.intra.cea.fr`):
-  the Pages domain is configured per-instance and shown in **Deploy → Pages**.
-
-It typically takes a few minutes after the first successful job for the
-Pages URL to become reachable.
-
-### Updating the live site
-
-Every push to the default branch re-runs the `pages` job and re-publishes
-the site. There is nothing to do beyond pushing changes.
+1. Push the repo to a **public** GitHub repository.
+2. **Settings → Pages → Deploy from a branch → `main` / `/ (root)`.**
+3. The committed [`CNAME`](CNAME) (`ledgera.tech`) sets the custom domain;
+   [`.nojekyll`](.nojekyll) disables Jekyll for this plain-HTML site.
+4. Point DNS at GitHub — apex `A`/`AAAA` records to GitHub Pages' IPs and a
+   `www` `CNAME` to `<user>.github.io` — **without** touching the OVH email
+   records (`MX`, `SPF`/`TXT`, DKIM `_domainkey`, `mail`/`smtp`/`imap`/`pop3`
+   CNAMEs, `SRV`).
+5. Enable **Enforce HTTPS**. GitHub serves the apex and auto-redirects
+   `www → ledgera.tech`.
 
 ## License
 

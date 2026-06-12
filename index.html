@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Ledgera is a modular distributed ledger that certifies computations through threshold proofs and anchors them in a secure log — auditability stays global while coordination becomes application-specific." />
+  <title>Ledgera — The Modular Distributed Ledger</title>
+
+  <!-- Open Graph (Facebook, LinkedIn, Slack, etc.) -->
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Ledgera" />
+  <meta property="og:title" content="Ledgera — The Modular Distributed Ledger" />
+  <meta property="og:description" content="Verifiable coordination without the consensus overhead. A distributed ledger that certifies computations through threshold proofs and anchors them in a secure log." />
+  <meta property="og:image" content="assets/images/og-image.png" />
+  <meta property="og:image:type" content="image/png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="Ledgera — The Modular Distributed Ledger" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Ledgera — The Modular Distributed Ledger" />
+  <meta name="twitter:description" content="Verifiable coordination — without the consensus overhead." />
+  <meta name="twitter:image" content="assets/images/og-image.png" />
+  <meta name="twitter:image:alt" content="Ledgera — The Modular Distributed Ledger" />
+  <link rel="icon" type="image/svg+xml" href="assets/images/logo/ledgera-v1.1-web-icon.svg" />
+  <meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff" />
+  <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0d0a1c" />
+
+  <!-- Set the theme before first paint: stored preference, else OS preference.
+       Without JS, data-theme stays unset and the site renders light. -->
+  <script>
+    (function () {
+      var theme = null;
+      try { theme = localStorage.getItem('theme'); } catch (e) {}
+      if (theme !== 'light' && theme !== 'dark') {
+        theme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      }
+      document.documentElement.setAttribute('data-theme', theme);
+    })();
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" />
+  <link rel="stylesheet" href="assets/css/styles.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="container nav-bar">
+      <a href="#home" class="brand" aria-label="Ledgera — home">
+        <img src="assets/images/logo/ledgera-logo.svg" alt="Ledgera" class="brand-logo" />
+      </a>
+
+      <nav id="primary-nav" class="primary-nav" aria-label="Primary">
+        <ul>
+          <li><a href="#home">Home</a></li>
+          <li><a href="#architecture">Architecture</a></li>
+          <li><a href="#resources">Resources</a></li>
+          <li><a href="#dapps">dApps</a></li>
+          <li><a href="#research">Research</a></li>
+          <li><a href="#roadmap">Roadmap</a></li>
+          <li><a href="#team">Team</a></li>
+          <li><a href="#releases">Releases</a></li>
+        </ul>
+      </nav>
+
+      <button class="theme-toggle" type="button" aria-label="Switch theme">
+        <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+        </svg>
+        <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="12" cy="12" r="4"/>
+          <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/>
+        </svg>
+      </button>
+
+      <a href="assets/docs/ledgera_whitepaper_paper.pdf" target="_blank" rel="noopener" class="nav-cta" aria-label="Download the Ledgera whitepaper (PDF)">
+        <span>Whitepaper</span>
+        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+          <polyline points="7 10 12 15 17 10"/>
+          <line x1="12" y1="15" x2="12" y2="3"/>
+        </svg>
+      </a>
+
+      <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false" aria-controls="primary-nav">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <main>
+    <section id="home" class="hero">
+      <div class="container hero-inner">
+        <div class="hero-copy">
+          <p class="eyebrow">The Modular Distributed Ledger</p>
+          <h1>Ledgera: Verifiable coordination — without the <span class="accent">consensus overhead</span>.</h1>
+          <p class="lede">
+            Ledgera is a distributed ledger designed for organizations and devices that need to
+            collaborate without relying on a central trusted authority. A committee of nodes
+            executes and certifies computations through threshold proofs, while anchoring them
+            in a secure log makes those proofs immutable, auditable, and reusable across parties —
+            without forcing every application into state-machine replication.
+          </p>
+          <div class="cta-row">
+            <a href="assets/docs/ledgera_whitepaper_paper.pdf" target="_blank" rel="noopener" class="btn btn-primary">Read the Whitepaper</a>
+            <a href="#architecture" class="btn btn-ghost">Explore the Architecture</a>
+          </div>
+        </div>
+
+        <aside class="hero-visual" aria-hidden="true">
+          <div class="proof-card">
+            <div class="proof-head">
+              <span class="proof-tag">LP_store · Proof of Storage</span>
+              <span class="proof-status">
+                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                anchored
+              </span>
+            </div>
+            <dl class="proof-fields">
+              <dt>execution_id</dt>        <dd>eid_7d11…90</dd>
+              <dt>digest_data</dt>         <dd>sha256:5e2c…</dd>
+              <dt>persistentDataKind</dt>  <dd>output</dd>
+              <dt>signers</dt>             <dd>L1 · L2 · L3</dd>
+              <dt>threshold</dt>           <dd>2 / 3</dd>
+            </dl>
+            <div class="proof-foot">
+              <span class="proof-block">T_sto · #12 049</span>
+              <span class="proof-chain">refs LP_comp[fid_8e91…]</span>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section id="about" class="section section-alt">
+      <div class="container">
+        <h2>About Ledgera</h2>
+
+        <div class="about-stack">
+          <article class="about-panel about-is">
+            <span class="about-tag">What it is</span>
+            <div class="about-body">
+              <p>
+                Ledgera is a modular distributed ledger for organisations and devices
+                that need to collaborate without relying on a central authority. A
+                committee of nodes — the <strong>Ledgents</strong> — executes and
+                certifies computations through threshold proofs, and a secure log
+                anchors those proofs so they stay immutable, auditable, and reusable
+                across parties. Each application configures only the certification
+                and coordination it actually needs.
+              </p>
+            </div>
+          </article>
+
+          <article class="about-panel about-isnt">
+            <span class="about-tag">What it is not</span>
+            <div class="about-body">
+              <p>
+                Ledgera is <em>not</em> a monolithic state-machine blockchain that
+                forces every application into a globally replicated world-state, nor
+                a sequencer-based Layer-2 that re-imposes total order on workloads
+                that don't need it. It is <em>not</em> anti-SMR either — applications
+                that genuinely need state-machine replication can still use Ledgera's
+                secure log as a total-ordering service. What Ledgera rejects is the
+                assumption that <em>every</em> application must.
+              </p>
+            </div>
+          </article>
+
+          <article class="about-panel about-why">
+            <span class="about-tag">Why Ledgera</span>
+            <div class="about-body">
+              <p>
+                Not every distributed application requires the same form of
+                coordination. Asset transfer, federated learning, multi-party
+                computation, and access-control workflows can be made correct without
+                total-order consensus — for them, consensus latency and message
+                complexity are pure overhead. Ledgera treats cryptographic proofs as
+                first-class output: verifiable and reusable across organisations,
+                devices, and time, while auditability stays global and coordination
+                becomes application-specific.
+              </p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="architecture" class="section">
+      <div class="container">
+        <h2>Architecture</h2>
+        <p class="section-lede">
+          Ledgera is built on a flexible pool of software nodes called <strong>Ledgents</strong>, each
+          equipped with its own cryptographic identity. Ledgera decouples execution,
+          proof production, storage, anchoring, and validation into five separable roles —
+          so each application uses only the certification and coordination it actually requires.
+          Each Ledgent could play any of these roles following specific deployment models.
+        </p>
+        <h3 class="papers-h">Roles</h3>
+        <div class="grid grid-3">
+          <article class="card">
+            <span class="card-icon" aria-hidden="true">
+              <img src="assets/images/logo/ledgera_role_icons_svg/icon_executor_gear.svg" alt="" />
+            </span>
+            <h3>Executors</h3>
+            <p>Collectively execute application-declared Verifiable Functions and propose results to the Provers.</p>
+          </article>
+          <article class="card">
+            <span class="card-icon" aria-hidden="true">
+              <img src="assets/images/logo/ledgera_role_icons_svg/icon_prover_rosette.svg" alt="" />
+            </span>
+            <h3>Provers</h3>
+            <p>Run a Byzantine-quorum protocol to produce threshold-signatures: <em>Proof of Computation</em> certifying the result and <em>Proof of Storage</em> certifying the availability of stored data.</p>
+          </article>
+          <article class="card">
+            <span class="card-icon" aria-hidden="true">
+              <img src="assets/images/logo/ledgera_role_icons_svg/icon_storer_box.svg" alt="" />
+            </span>
+            <h3>Storers</h3>
+            <p>Persist results (and inputs, when needed) in a content-addressed replicated KVS, providing durable availability.</p>
+          </article>
+          <article class="card">
+            <span class="card-icon" aria-hidden="true">
+              <img src="assets/images/logo/ledgera_role_icons_svg/icon_logger_anchor.svg" alt="" />
+            </span>
+            <h3>Loggers</h3>
+            <p>Anchor proofs as transactions in the secure log — making them immutable, auditable, and reusable across parties.</p>
+          </article>
+          <article class="card">
+            <span class="card-icon" aria-hidden="true">
+              <img src="assets/images/logo/ledgera_role_icons_svg/icon_validator_check.svg" alt="" />
+            </span>
+            <h3>Validators</h3>
+            <p>Verify proofs presented as inputs and enforce application-level constraints over shared state (e.g. iteration counters, no double-spending).</p>
+          </article>
+        </div>
+
+        <h3 class="papers-h">Deployment models</h3>
+        <p class="section-lede">
+          A <strong>deployment model</strong> defines how many Ledgents are deployed and which of the five roles
+          each one plays — letting an application trade simplicity against per-role efficiency.
+          Throughout, <code>f</code> denotes the maximum number of Byzantine (faulty or malicious) Ledgents
+          the system is configured to tolerate, so each role's quorum bound is expressed in terms of it.
+        </p>
+        <div class="grid">
+          <article class="card">
+            <span class="card-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><circle cx="5" cy="5" r="2"/><circle cx="19" cy="5" r="2"/><circle cx="5" cy="19" r="2"/><circle cx="19" cy="19" r="2"/><line x1="7" y1="6.5" x2="10" y2="10"/><line x1="17" y1="6.5" x2="14" y2="10"/><line x1="7" y1="17.5" x2="10" y2="14"/><line x1="17" y1="17.5" x2="14" y2="14"/></svg>
+            </span>
+            <h3>Fully Replicated</h3>
+            <p>Every Ledgent plays all roles. Simple to reason about, but the whole pool inherits the strongest single-role bound — <code>3f + 1</code> from Loggers.</p>
+          </article>
+          <article class="card">
+            <span class="card-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+            </span>
+            <h3>Role-specialised</h3>
+            <p>Pools are dedicated to specific roles, each sized for its own Byzantine bound: <code>2f + 1</code> Provers, <code>f + 1</code> Storers, <code>3f + 1</code> Loggers — optimal per role.</p>
+          </article>
+          <article class="card">
+            <span class="card-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+            </span>
+            <h3>Compute–Persistence Split</h3>
+            <p>The concrete role-specialised setup adopted in <a href="#fantastyc">Fantastyc</a>: one pool plays Executor, Prover, and Validator, while Loggers and Storers each form their own pool. Shipment-based Proofs of Storage keep KVS replication off the client's critical path.</p>
+          </article>
+        </div>
+
+        <p class="arch-more">
+          For protocol details — proof construction, BFT thresholds, sequence flows,
+          and deployment options — see the
+          <a href="assets/docs/ledgera_v_0_2_yellow_paper_final.pdf" target="_blank" rel="noopener">Yellow Paper</a>.
+        </p>
+      </div>
+    </section>
+
+    <section id="resources" class="section section-alt">
+      <div class="container">
+        <h2>Resources</h2>
+        <p class="section-lede">
+          Ledgera's own publications, together with the foundational research it
+          builds on — so the design rationale can be traced all the way back to
+          the literature.
+        </p>
+
+        <h3 class="papers-h">From the Ledgera project</h3>
+        <ul class="pdf-list">
+          <li class="pdf-card">
+            <span class="pdf-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/>
+                <path d="M14 3v5h5"/>
+                <path d="M9 14h6M9 17h4"/>
+              </svg>
+            </span>
+            <div class="pdf-body">
+              <h3>Ledgera Whitepaper</h3>
+              <p>High-level introduction to Ledgera — vision, design rationale, and target use cases.</p>
+              <p class="pdf-meta">PDF · 590 KB · also as Markdown + images (ZIP)</p>
+            </div>
+            <div class="pdf-actions" role="group" aria-label="Download the Ledgera whitepaper">
+              <a class="btn btn-primary pdf-cta" href="assets/docs/ledgera_whitepaper_paper.pdf" target="_blank" rel="noopener" download aria-label="Download the Ledgera whitepaper as PDF">
+                <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="m7 11 5 5 5-5"/><path d="M4 20h16"/></svg>
+                <span>PDF</span>
+              </a>
+              <a class="btn pdf-cta pdf-cta-alt" href="assets/docs/ledgera_whitepaper_markdown.zip" rel="noopener" download aria-label="Download the Ledgera whitepaper as a Markdown and images ZIP archive">
+                <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="m7 11 5 5 5-5"/><path d="M4 20h16"/></svg>
+                <span>Markdown (ZIP)</span>
+              </a>
+            </div>
+          </li>
+          <li class="pdf-card">
+            <span class="pdf-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/>
+                <path d="M14 3v5h5"/>
+                <path d="M9 14h6M9 17h4"/>
+              </svg>
+            </span>
+            <div class="pdf-body">
+              <h3>Ledgera Yellow Paper</h3>
+              <p>Protocol-level specification — formal definitions, data structures, and the reference execution model.</p>
+              <p class="pdf-meta">PDF · 1.0 MB · v0.2</p>
+            </div>
+            <a class="btn btn-primary pdf-cta" href="assets/docs/ledgera_v_0_2_yellow_paper_final.pdf" target="_blank" rel="noopener" download aria-label="Download the Ledgera yellow paper as PDF">
+              <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="m7 11 5 5 5-5"/><path d="M4 20h16"/></svg>
+              <span>PDF</span>
+            </a>
+          </li>
+          <li id="fantastyc" class="pdf-card pdf-card-cite">
+            <span class="pdf-icon pdf-icon-cite" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+                <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+              </svg>
+            </span>
+            <div class="pdf-body">
+              <h3>Fantastyc — Blockchain-based federated learning made secure and practical</h3>
+              <p>Boitier, W., <em>et al.</em> The precursor work that inspired Ledgera: a committee of nodes producing verifiable aggregation proofs, with the model stored off-chain.</p>
+              <p class="pdf-meta">IEEE SRDS 2024 · PDF · 884 KB</p>
+            </div>
+            <a class="btn btn-primary pdf-cta" href="assets/docs/Fantastyc_Blockchain-Based_Federated_Learning_Made_Secure_and_Practical.pdf" target="_blank" rel="noopener" download aria-label="Download the Fantastyc paper as PDF">
+              <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="m7 11 5 5 5-5"/><path d="M4 20h16"/></svg>
+              <span>PDF</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="dapps" class="section">
+      <div class="container">
+        <h2>Decentralized Applications</h2>
+        <p class="section-lede">
+          Many distributed workflows do not require a totally-ordered, replicated world state.
+          Ledgera supports applications where coordination is configured to fit the workload —
+          from oracle-like one-shot computations to multi-round federated learning and asset
+          transfer.
+        </p>
+        <div class="grid grid-3">
+          <article class="card">
+            <span class="card-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><line x1="22" y1="12" x2="2" y2="12"/><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/><line x1="6" y1="16" x2="6.01" y2="16"/><line x1="10" y1="16" x2="10.01" y2="16"/></svg>
+            </span>
+            <h3>Verifiable Storage</h3>
+            <p>Content-addressed replicated KVS with explicit shipment evidence. Closest analogue: IPFS-like systems, but with first-class integrity and availability proofs.</p>
+          </article>
+          <article class="card">
+            <span class="card-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+            </span>
+            <h3>Verifiable Compute (Oracle)</h3>
+            <p>Stateless deterministic execution that returns a verifiable Proof of Computation — an externally checkable answer to a one-shot question, with no shared state required.</p>
+          </article>
+          <article class="card">
+            <span class="card-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><circle cx="6" cy="6" r="3"/><circle cx="18" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="18" r="3"/><line x1="9" y1="6" x2="15" y2="6"/><line x1="6" y1="9" x2="6" y2="15"/><line x1="9" y1="18" x2="15" y2="18"/><line x1="18" y1="9" x2="18" y2="15"/></svg>
+            </span>
+            <h3>Composed Dataflows</h3>
+            <p>Chain executions where one client consumes the certified result of another's computation — proofs become first-class composable inputs.</p>
+          </article>
+          <article class="card">
+            <span class="card-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><circle cx="4" cy="6" r="2"/><circle cx="20" cy="6" r="2"/><circle cx="4" cy="18" r="2"/><circle cx="20" cy="18" r="2"/><line x1="6" y1="7" x2="10" y2="11"/><line x1="18" y1="7" x2="14" y2="11"/><line x1="6" y1="17" x2="10" y2="13"/><line x1="18" y1="17" x2="14" y2="13"/></svg>
+            </span>
+            <h3>Federated Learning</h3>
+            <p>Client model updates aggregation over multiple rounds. Validators track the iteration counter; Storers persist contributions; proofs certify that training followed the declared schedule.</p>
+          </article>
+          <article class="card">
+            <span class="card-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            </span>
+            <h3>Multi-Party Computation</h3>
+            <p>Agreement on how input shares are distributed, while the rest of the computation remains private among the parties — without paying the full cost of consensus on every step.</p>
+          </article>
+          <article class="card">
+            <span class="card-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>
+            </span>
+            <h3>Asset Transfer</h3>
+            <p>Checking transactions for preventing double-spending and providing global auditability via the secure log.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="research" class="section section-alt">
+      <div class="container">
+        <h2>Research Foundation</h2>
+        <p class="section-lede">
+          Ledgera challenges the assumption that every distributed application must adopt
+          state machine replication. Our work explores when weaker coordination primitives
+          suffice — and how to compose them safely.
+        </p>
+        <ul class="link-list">
+          <li><strong>Beyond Total-Order Consensus</strong> — Byzantine quorum certification is strictly weaker than total-order consensus, and typically incurs lower latency and message complexity. For many applications Byzantine quorum certification is enough.</li>
+          <li><strong>Tunable Byzantine Resilience</strong> — Provers require <code>2f + 1</code> nodes, Storers <code>f + 1</code>, and Loggers <code>3f + 1</code>. Role specialisation lets each pool be sized for its own threat model.</li>
+          <li><strong>Proofs as First-Class Output</strong> — Ledgera Proofs of Computation (LPc) and Proofs of Storage (LPs) are threshold-signed Byzantine-quorum attestations: verifiable, reusable, and composable across organizations, devices, and time.</li>
+          <li><strong>Compute–Persistence Split</strong> — separating the Executor/Prover pool from Logger and Storer pools, with shipment-based Proofs of Storage that keep KVS replication off the critical latency path of client requests.</li>
+          <li><strong>Roots in Federated Learning</strong> — Ledgera generalises an architecture born from securing lightweight FL aggregation with a committee of nodes rather than a blockchain smart contract.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="roadmap" class="section">
+      <div class="container">
+        <h2>Features</h2>
+        <p class="section-lede">Ledgera grows from a minimal certified-execution core toward full validation and shared-state coordination.</p>
+        <ol class="timeline">
+          <li>
+            <span class="t-body"><strong>Minimal core</strong> — certified execution of stateless Verifiable Functions with Executors, Provers, and Loggers; Proofs of Computation anchored in the Secure Log.</span>
+          </li>
+          <li>
+            <span class="t-body"><strong>Verifiable storage</strong> — Storers and shipment-based Proofs of Storage; Compute–Persistence Split deployment; content-addressed KVS persistence.</span>
+          </li>
+          <li>
+            <span class="t-body"><strong>Validation &amp; shared state</strong> — Validators for proof-carrying composition, federated-learning iteration tracking, and asset-transfer double-spend prevention.</span>
+          </li>
+          <li>
+            <span class="t-body"><strong>Re-execution model &amp; pipelines</strong> — stateful functions, stored artefacts as inputs to subsequent invocations, and richer application orchestration.</span>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <section id="team" class="section section-alt">
+      <div class="container">
+        <h2>Team Expertise</h2>
+        <div class="grid grid-team">
+          <article class="card">
+            <span class="card-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="8" rx="2"/><rect x="2" y="14" width="20" height="8" rx="2"/><line x1="6" y1="6" x2="6.01" y2="6"/><line x1="6" y1="18" x2="6.01" y2="18"/></svg>
+            </span>
+            <h3>Distributed Systems</h3>
+            <p>Designs BFT protocols, deployment models, and the Ledgent role architecture.</p>
+          </article>
+          <article class="card">
+            <span class="card-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            </span>
+            <h3>Applied Cryptography</h3>
+            <p>Threshold signatures, proof construction, and verifiability across organisations.</p>
+          </article>
+          <article class="card">
+            <span class="card-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"/><path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/></svg>
+            </span>
+            <h3>Applications &amp; Pilots</h3>
+            <p>Federated learning, multi-party computation, and asset-transfer use cases.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="releases" class="section section-alt">
+      <div class="container">
+        <h2>Releases</h2>
+        <p class="section-lede">All Ledgera versions — what ships today, and what's on the way.</p>
+        <div class="release-banner" role="note">
+          <span class="release-banner-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M4 4l8 8-8 8" />
+              <path d="M12 12h8" />
+              <circle cx="12" cy="12" r="9" opacity="0.35" />
+            </svg>
+          </span>
+          <div class="release-banner-body">
+            <p class="release-banner-eyebrow">Source code release</p>
+            <p class="release-banner-text">Ledgera goes open source on <time datetime="2026-06-26">June 26, 2026</time>.</p>
+          </div>
+        </div>
+        <ul class="release-list">
+          <li>
+            <span class="release-tag">v0.2.0</span>
+            <span class="release-date">Jun 2026</span>
+            <span class="release-desc">Initial open-source release with Core functionality, its API, and a template for building Ledgera-based applications.</span>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="news" class="section" hidden>
+      <div class="container">
+        <h2>News</h2>
+        <p class="section-lede">All Ledgera-related events — publications, demos, talks, and pilots.</p>
+        <ul class="news-list">
+          <li>
+            <div class="news-head">
+              <p class="news-date">2026 · June</p>
+              <span class="news-tag news-tag-demo">Demo</span>
+            </div>
+            <h3>Ledgera and its application to Decentralised Collaborative Fine-Tuning</h3>
+            <p>An IEEE ICDCS 2026 Posters/Demonstration entry showing decentralised AI workflows in which multiple stakeholders jointly build training data and ML models — with verifiable execution, cryptographic proofs, and content-based auditability — delivering provenance, accountability and reproducibility without the overhead of a blockchain.</p>
+          </li>
+          <li>
+            <div class="news-head">
+              <p class="news-date">2026 · May 19</p>
+              <span class="news-tag news-tag-paper">Paper</span>
+            </div>
+            <h3>Ledgera Yellow Paper — revision 1 released</h3>
+            <p>Protocol-level specification: role model, proof construction, BFT thresholds, and deployment options. <a href="assets/docs/ledgera_v_0_2_yellow_paper_final.pdf" target="_blank" rel="noopener">Download (PDF)</a>.</p>
+          </li>
+          <li>
+            <div class="news-head">
+              <p class="news-date">2026 · February</p>
+              <span class="news-tag news-tag-paper">Paper</span>
+            </div>
+            <h3>Ledgera Whitepaper preprint published</h3>
+            <p>Vision, design rationale, and the three flagship application patterns (federated learning, multi-party computation, asset transfer). <a href="assets/docs/ledgera_whitepaper_paper.pdf" target="_blank" rel="noopener">Download (PDF)</a>.</p>
+          </li>
+          <li>
+            <div class="news-head">
+              <p class="news-date">2025 · June</p>
+              <span class="news-tag news-tag-talk">Tutorial</span>
+            </div>
+            <h3>Tutorial: Decentralized Federated Learning — Enhancing Reliability with Blockchain</h3>
+            <p>A structured look at when blockchain genuinely strengthens Federated Learning — its real strengths, trade-offs, and limits — and when alternative approaches can deliver similar reliability with fewer costs.</p>
+          </li>
+          <li>
+            <div class="news-head">
+              <p class="news-date">2024 · September</p>
+              <span class="news-tag news-tag-paper">Paper</span>
+            </div>
+            <h3>Fantastyc presented at SRDS 2024</h3>
+            <p>Precursor work that inspired Ledgera: blockchain-backed federated learning aggregation made secure and practical (Boitier et al., IEEE SRDS).</p>
+          </li>
+          <li>
+            <div class="news-head">
+              <p class="news-date">Upcoming</p>
+              <span class="news-tag news-tag-event">Event</span>
+            </div>
+            <h3>Pilot deployments &amp; community updates</h3>
+            <p>Industrial pilots and protocol updates will be announced here as they go live.</p>
+          </li>
+        </ul>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div class="footer-col footer-brand">
+        <a href="#home" class="footer-brand-link" aria-label="Ledgera home">
+          <img src="assets/images/logo/ledgera-logo.svg" alt="Ledgera" class="footer-logo" />
+        </a>
+        <p>The modular distributed ledger — verifiable coordination, application-specific.</p>
+      </div>
+
+      <div class="footer-col">
+        <h4>Documentation</h4>
+        <ul>
+          <li><a href="assets/docs/ledgera_whitepaper_paper.pdf" target="_blank" rel="noopener">Whitepaper</a></li>
+          <li><a href="assets/docs/ledgera_v_0_2_yellow_paper_final.pdf" target="_blank" rel="noopener">Yellow Paper</a></li>
+          <li><a href="#architecture">Architecture</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Project</h4>
+        <ul>
+          <li><a href="#dapps">Applications</a></li>
+          <li><a href="#research">Research Foundation</a></li>
+          <li><a href="#roadmap">Features</a></li>
+          <li><a href="#releases">Releases</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>About</h4>
+        <ul>
+          <li><a href="#about">About Ledgera</a></li>
+          <li><a href="#team">Team Expertise</a></li>
+          <li><a href="LICENSE">MIT License</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <div class="container">
+        <p>&copy; <span id="year"></span> Ledgera Project Contributors. Released under the <a href="LICENSE">MIT License</a>.</p>
+        <a href="#home" class="footer-top">Back to top ↑</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="assets/js/script.js"></script>
+</body>
+</html>

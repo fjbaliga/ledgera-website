@@ -1,0 +1,11 @@
+# macOS
+.DS_Store
+
+# Editor / IDE
+.idea/
+.vscode/
+*.swp
+*~
+
+# GitLab Pages build output (produced by the `pages` CI job)
+public/

@@ -2,16 +2,16 @@
 
 The public landing site for **Ledgera — The Modular Distributed Ledger**.
 A single-page static site — plain HTML/CSS/JS, no build step or dependencies.
+Published with **GitHub Pages** at <https://ledgera.tech>.
 
 ## Project layout
 
 ```
 .
 ├── index.html              Single-page site (all sections)
-├── .htaccess               Apache rules for OVH hosting (canonical host + force HTTPS)
 ├── CNAME                   GitHub Pages custom domain (ledgera.tech)
 ├── .nojekyll               Disable Jekyll processing on GitHub Pages
-├── .gitlab-ci.yml          CI: GitLab Pages publish + OVH SFTP deploy
+├── .gitignore
 ├── LICENSE                 MIT
 ├── README.md
 └── assets/
@@ -47,61 +47,23 @@ python3 -m http.server 9000 --bind 127.0.0.1
 Use `--bind 0.0.0.0` to reach it from other devices on your LAN (mind
 firewalls and what you're exposing).
 
-## Deployment
+## Deployment — GitHub Pages
 
-The site can be published to any static host. Three targets are wired up:
+The site is served by **GitHub Pages** straight from the repository root, with
+no build step. Every push to `main` republishes it.
 
-| Target | Reachability | HTTPS | How |
-| --- | --- | --- | --- |
-| **GitLab Pages** | Internal (CEA network) | automatic | `pages` job in `.gitlab-ci.yml` |
-| **OVH shared hosting** | Public | manual (OVH cert) | `deploy:ovh` job, or VS Code SFTP |
-| **GitHub Pages** | Public | automatic (Let's Encrypt) | push to GitHub + `CNAME` |
+One-time setup:
 
-> **Note:** the CEA GitLab instance (`gitlab.freyja.intra.cea.fr`) and its
-> Pages are reachable only from inside the CEA network, so GitLab Pages serves
-> as an **internal preview**. Public visitors are served by OVH and/or GitHub
-> Pages.
-
-### GitLab Pages — internal preview
-
-`.gitlab-ci.yml` defines a `pages` job that copies `index.html`, `.htaccess`,
-`LICENSE`, and `assets/` into `public/`, which GitLab Pages publishes. It runs
-on every push to `main`; the published URL is shown under **Deploy → Pages**.
-You can also trigger a run from **Build → Pipelines → Run pipeline**.
-
-### OVH shared hosting — public
-
-Two ways to push to the OVH account (cluster `cluster100`, docroot `www`):
-
-- **CI — `deploy:ovh` job:** mirrors the built `public/` tree over SFTP with
-  `lftp`. It stays **dormant** until you add a masked **`OVH_PASSWORD`** CI/CD
-  variable (Settings → CI/CD → Variables). Optionally add **`OVH_KNOWN_HOSTS`**
-  (the output of `ssh-keyscan ssh.cluster100.hosting.ovh.net`) to pin the host
-  key with strict checking; without it the job falls back to trust-on-first-use.
-  A TCP reachability pre-check and connection timeouts keep a blocked runner
-  from hanging.
-  ⚠️ The CEA runners have **no outbound internet**, so this job only succeeds
-  on a runner with egress to OVH.
-- **VS Code SFTP:** [`.vscode/sftp.json`](.vscode/sftp.json) uploads on save to
-  the same docroot — the practical path from inside the CEA network.
-
-[`.htaccess`](.htaccess) sets the canonical host (`www.ledgera.tech`) and forces
-HTTPS on OVH's Apache. It is ignored by GitLab/GitHub Pages.
-
-### GitHub Pages — public, automatic HTTPS
-
-For public hosting with automatic Let's Encrypt HTTPS on `ledgera.tech`:
-
-1. Push the repo to a **public** GitHub repository.
-2. **Settings → Pages → Deploy from a branch → `main` / `/ (root)`.**
-3. The committed [`CNAME`](CNAME) (`ledgera.tech`) sets the custom domain;
+1. **Settings → Pages → Deploy from a branch → `main` / `/ (root)`.**
+2. The committed [`CNAME`](CNAME) (`ledgera.tech`) sets the custom domain, and
    [`.nojekyll`](.nojekyll) disables Jekyll for this plain-HTML site.
-4. Point DNS at GitHub — apex `A`/`AAAA` records to GitHub Pages' IPs and a
-   `www` `CNAME` to `<user>.github.io` — **without** touching the OVH email
-   records (`MX`, `SPF`/`TXT`, DKIM `_domainkey`, `mail`/`smtp`/`imap`/`pop3`
-   CNAMEs, `SRV`).
-5. Enable **Enforce HTTPS**. GitHub serves the apex and auto-redirects
-   `www → ledgera.tech`.
+3. **DNS** — point the apex `A`/`AAAA` records at GitHub Pages' IP addresses and
+   a `www` `CNAME` at `<user>.github.io`. Leave email DNS (`MX`, `SPF`/`TXT`,
+   DKIM, mail CNAMEs, `SRV`) untouched.
+4. Enable **Enforce HTTPS** — GitHub provisions a Let's Encrypt certificate for
+   `ledgera.tech` and `www.ledgera.tech`, and redirects `www → ledgera.tech`.
+
+To update the live site, just push to `main`.
 
 ## License
 

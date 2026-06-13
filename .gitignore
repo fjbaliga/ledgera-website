@@ -7,5 +7,5 @@
 *.swp
 *~
 
-# GitLab Pages build output (produced by the `pages` CI job)
+# Local build/preview output
 public/
